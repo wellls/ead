@@ -1,0 +1,16 @@
+package com.github.wellls.authuser.services;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import com.github.wellls.authuser.models.UserModel;
+
+public interface UserService {
+
+    List<UserModel> findAll();
+
+    Optional<UserModel> findById(UUID userId);
+
+    void delete(UserModel userModel);
+}
