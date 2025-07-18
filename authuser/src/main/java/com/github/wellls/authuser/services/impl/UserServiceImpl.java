@@ -1,11 +1,17 @@
 package com.github.wellls.authuser.services.impl;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.github.wellls.authuser.dtos.UserRecordDto;
+import com.github.wellls.authuser.enums.UserStatus;
+import com.github.wellls.authuser.enums.UserType;
 import com.github.wellls.authuser.exceptions.NotFoundException;
 import com.github.wellls.authuser.models.UserModel;
 import com.github.wellls.authuser.repositories.UserRepository;
@@ -37,5 +43,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(UserModel userModel) {
         userRepository.delete(userModel);
+    }
+
+    @Override
+    public UserModel registerUser(UserRecordDto userRecordDto) {
+        var userModel = new UserModel();
+        BeanUtils.copyProperties(userRecordDto, userModel);
+        userModel.setUserStatus(UserStatus.ACTIVE);
+        userModel.setUserType(UserType.USER);
+        userModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+        userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+        return userRepository.save(userModel);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

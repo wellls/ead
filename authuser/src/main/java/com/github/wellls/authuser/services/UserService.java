@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.wellls.authuser.dtos.UserRecordDto;
 import com.github.wellls.authuser.models.UserModel;
 
 public interface UserService {
@@ -13,4 +14,10 @@ public interface UserService {
     Optional<UserModel> findById(UUID userId);
 
     void delete(UserModel userModel);
+
+    UserModel registerUser(UserRecordDto userRecordDto);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }
