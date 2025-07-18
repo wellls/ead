@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.github.wellls.authuser.dtos.UserRecordDto;
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserModel> findById(UUID userId) {
         Optional<UserModel> userModelOptional = userRepository.findById(userId);
-        if (userModelOptional.isEmpty()) {
+        if(userModelOptional.isEmpty()){
             throw new NotFoundException("Error: User not found.");
         }
         return userModelOptional;
@@ -86,5 +88,10 @@ public class UserServiceImpl implements UserService {
         userModel.setImageUrl(userRecordDto.imageUrl());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         return userRepository.save(userModel);
+    }
+
+    @Override
+    public Page<UserModel> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }
