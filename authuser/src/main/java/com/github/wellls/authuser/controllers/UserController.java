@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.github.wellls.authuser.dtos.UserRecordDto;
 import com.github.wellls.authuser.models.UserModel;
 import com.github.wellls.authuser.services.UserService;
+import com.github.wellls.authuser.specifications.SpecificationTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserModel>> getAllUsers(Pageable pageable){
-        Page<UserModel> userModelPage = userService.findAll(pageable);
+    public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec, Pageable pageable){
+        Page<UserModel> userModelPage = userService.findAll(spec, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(userModelPage);
     }
 
@@ -70,4 +71,8 @@ public class UserController {
                                               UserRecordDto userRecordDto){
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateImage(userRecordDto, userService.findById(userId).get()));
     }
+
+
+
+
 }
